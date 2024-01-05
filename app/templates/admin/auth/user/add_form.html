@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block form_top %}
+  {% if not is_popup %}
+    <p>{% translate 'First, enter an email, password and name. Then, you’ll be able to edit more user options.' %}</p>
+  {% else %}
+    <p>{% translate "Enter an email, password and name." %}</p>
+  {% endif %}
+{% endblock %}
