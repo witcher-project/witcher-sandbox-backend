@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse("users:create")
-TOKEN_URL = reverse("users:token")
+TOKEN_URL = reverse("users:token_obtain_pair")
 ME_URL = reverse("users:me")
 
 
@@ -68,7 +68,8 @@ class PublicUserAPITests(TestCase):
 
         res = self.client.post(TOKEN_URL, token_payload)
 
-        self.assertIn('token', res.data)
+        self.assertIn('refresh', res.data)
+        self.assertIn('access', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_create_token_bad_credentials(self):
@@ -92,7 +93,8 @@ class PublicUserAPITests(TestCase):
 
         res = self.client.post(TOKEN_URL, payload)
 
-        self.assertNotIn('token', res.data)
+        self.assertNotIn('refresh', res.data)
+        self.assertNotIn('access', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_retrieve_user_unauthorized(self):
