@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'core',
-    'users'
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +142,5 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
