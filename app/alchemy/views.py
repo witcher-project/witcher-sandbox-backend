@@ -9,7 +9,7 @@ class BaseViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             permission_classes = [IsAuthenticatedOrReadOnly]
         else:
             permission_classes = [IsAuthenticated]
@@ -18,9 +18,9 @@ class BaseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
-            return self.queryset.filter(user=user).order_by('-id')
+            return self.queryset.filter(user=user).order_by("-id")
         else:
-            return self.queryset.order_by('-id')
+            return self.queryset.order_by("-id")
 
 
 class DecotionViewSet(BaseViewSet):

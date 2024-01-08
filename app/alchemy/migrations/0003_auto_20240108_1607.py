@@ -4,30 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('alchemy', '0002_initial'),
+        ("alchemy", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='bomb',
-            name='img',
-            field=models.ImageField(default='media/assets/default_bomb.png', upload_to='alchemy/bombs/'),
+            model_name="bomb",
+            name="img",
+            field=models.ImageField(
+                default="media/assets/default_bomb.png", upload_to="alchemy/bombs/"
+            ),
         ),
         migrations.AlterField(
-            model_name='decotion',
-            name='img',
-            field=models.ImageField(default='media/assets/default_decotion.png', upload_to='alchemy/decotions/'),
+            model_name="decotion",
+            name="img",
+            field=models.ImageField(
+                default="media/assets/default_decotion.png",
+                upload_to="alchemy/decotions/",
+            ),
         ),
         migrations.AlterField(
-            model_name='oil',
-            name='img',
-            field=models.ImageField(default='media/assets/default_oil.png', upload_to='alchemy/oils/'),
+            model_name="oil",
+            name="img",
+            field=models.ImageField(
+                default="media/assets/default_oil.png", upload_to="alchemy/oils/"
+            ),
         ),
         migrations.AlterField(
-            model_name='potion',
-            name='img',
-            field=models.ImageField(default='media/assets/default_potion.png', upload_to='alchemy/potions/'),
+            model_name="potion",
+            name="img",
+            field=models.ImageField(
+                default="media/assets/default_potion.png", upload_to="alchemy/potions/"
+            ),
         ),
     ]

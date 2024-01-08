@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='tier',
-            name='color_hex',
-            field=models.CharField(default='FFFFFF', max_length=6),
+            model_name="tier",
+            name="color_hex",
+            field=models.CharField(default="FFFFFF", max_length=6),
         ),
     ]

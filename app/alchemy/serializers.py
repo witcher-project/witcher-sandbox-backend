@@ -6,8 +6,20 @@ from rest_framework import serializers
 class BaseAlchemyElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseAlchemyElement
-        fields = ["id", "img", "name", "tier", "type", "price", "source", "link", "effect", "charges", "duration_sec"]
-        read_only_fields = ['id']
+        fields = [
+            "id",
+            "img",
+            "name",
+            "tier",
+            "type",
+            "price",
+            "source",
+            "link",
+            "effect",
+            "charges",
+            "duration_sec",
+        ]
+        read_only_fields = ["id"]
 
 
 class DecotionSerializer(serializers.ModelSerializer):

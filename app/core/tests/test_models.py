@@ -4,6 +4,7 @@ from django.test import TestCase
 
 class ModelTest(TestCase):
     """Test models"""
+
     def test_create_tier(self):
         """Test creating a Tier"""
         tier = Tier.objects.create(name="Relict", color_hex="FF0000")

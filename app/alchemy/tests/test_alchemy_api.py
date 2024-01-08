@@ -12,31 +12,31 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-DECOTIONS_URL = reverse('alchemy:decotion-list')
-POTIONS_URL = reverse('alchemy:potion-list')
-OILS_URL = reverse('alchemy:oil-list')
-BOMBS_URL = reverse('alchemy:bomb-list')
+DECOTIONS_URL = reverse("alchemy:decotion-list")
+POTIONS_URL = reverse("alchemy:potion-list")
+OILS_URL = reverse("alchemy:oil-list")
+BOMBS_URL = reverse("alchemy:bomb-list")
 
 
 def create_alchemy_element(user, alchemy_model, **params):
     defaults = {
         "user": user,
-        "name": f'Sample {alchemy_model.__name__.lower()} name',
-        "img": '',
-        "tier": f'Sample {alchemy_model.__name__.lower()} tier',
-        "type": f'Sample {alchemy_model.__name__.lower()} type',
+        "name": f"Sample {alchemy_model.__name__.lower()} name",
+        "img": "",
+        "tier": f"Sample {alchemy_model.__name__.lower()} tier",
+        "type": f"Sample {alchemy_model.__name__.lower()} type",
         "price": 100,
-        "source": f'Same {alchemy_model.__name__.lower()} source',
-        "link": 'witcherfandom',
-        "effect": f'Same {alchemy_model.__name__.lower()} effect',
+        "source": f"Same {alchemy_model.__name__.lower()} source",
+        "link": "witcherfandom",
+        "effect": f"Same {alchemy_model.__name__.lower()} effect",
     }
     defaults.update(params)
 
-    tier, _ = Tier.objects.get_or_create(name=defaults['tier'], color_hex="ffffff")
-    type, _ = Type.objects.get_or_create(name=defaults['type'])
+    tier, _ = Tier.objects.get_or_create(name=defaults["tier"], color_hex="ffffff")
+    type, _ = Type.objects.get_or_create(name=defaults["type"])
 
-    defaults['tier'] = tier
-    defaults['type'] = type
+    defaults["tier"] = tier
+    defaults["type"] = type
 
     alchemy_element = alchemy_model.objects.create(**defaults)
     return alchemy_element
@@ -60,11 +60,11 @@ def create_bomb(user, **params):
 
 class PublicAlchemyAPITest(TestCase):
     """Test unauthenticated API request"""
+
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            email='user@example.com',
-            password='testpass'
+            email="user@example.com", password="testpass"
         )
 
     def test_auth_not_required(self):
@@ -78,7 +78,7 @@ class PublicAlchemyAPITest(TestCase):
 
         res = self.client.get(DECOTIONS_URL)
 
-        decotions = Decotion.objects.all().order_by('-id')
+        decotions = Decotion.objects.all().order_by("-id")
         serializer = DecotionSerializer(decotions, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -91,7 +91,7 @@ class PublicAlchemyAPITest(TestCase):
 
         res = self.client.get(POTIONS_URL)
 
-        potions = Potion.objects.all().order_by('-id')
+        potions = Potion.objects.all().order_by("-id")
         serializer = PotionSerializer(potions, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -103,7 +103,7 @@ class PublicAlchemyAPITest(TestCase):
 
         res = self.client.get(OILS_URL)
 
-        oils = Oil.objects.all().order_by('-id')
+        oils = Oil.objects.all().order_by("-id")
         serializer = OilSerializer(oils, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -115,7 +115,7 @@ class PublicAlchemyAPITest(TestCase):
 
         res = self.client.get(BOMBS_URL)
 
-        bombs = Bomb.objects.all().order_by('-id')
+        bombs = Bomb.objects.all().order_by("-id")
         serializer = BombSerializer(bombs, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -123,12 +123,10 @@ class PublicAlchemyAPITest(TestCase):
 
 class PrivateAlchemyAPITest(TestCase):
     """Test authenticated API request"""
+
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            'user@example.com',
-            'testpass'
-        )
+        self.user = get_user_model().objects.create_user("user@example.com", "testpass")
         self.client.force_authenticate(self.user)
 
     def test_delete_decotion(self):

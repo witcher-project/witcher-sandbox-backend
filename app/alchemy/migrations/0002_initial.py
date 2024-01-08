@@ -6,64 +6,83 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('alchemy', '0001_initial'),
-        ('core', '0001_initial'),
+        ("alchemy", "0001_initial"),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='potion',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="potion",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='oil',
-            name='tier',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.tier'),
+            model_name="oil",
+            name="tier",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.tier"
+            ),
         ),
         migrations.AddField(
-            model_name='oil',
-            name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.type'),
+            model_name="oil",
+            name="type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.type"
+            ),
         ),
         migrations.AddField(
-            model_name='oil',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="oil",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='decotion',
-            name='tier',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.tier'),
+            model_name="decotion",
+            name="tier",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.tier"
+            ),
         ),
         migrations.AddField(
-            model_name='decotion',
-            name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.type'),
+            model_name="decotion",
+            name="type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.type"
+            ),
         ),
         migrations.AddField(
-            model_name='decotion',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="decotion",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='bomb',
-            name='tier',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.tier'),
+            model_name="bomb",
+            name="tier",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.tier"
+            ),
         ),
         migrations.AddField(
-            model_name='bomb',
-            name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.type'),
+            model_name="bomb",
+            name="type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.type"
+            ),
         ),
         migrations.AddField(
-            model_name='bomb',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="bomb",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]
