@@ -1,8 +1,11 @@
 from alchemy import serializers
 from alchemy.models import Bomb, Decotion, Oil, Potion
+from core.models import Tier, Type
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from .permissions import IsOwnerOfObject
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -12,15 +15,16 @@ class BaseViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             permission_classes = [IsAuthenticatedOrReadOnly]
         else:
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated, IsOwnerOfObject]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_authenticated:
-            return self.queryset.filter(user=user).order_by("-id")
-        else:
-            return self.queryset.order_by("-id")
+        return self.queryset.order_by("-id")
+
+    def perform_create(self, serializer):
+        type = Type.objects.get(id=self.request.data.get("tier"))
+        tier = Tier.objects.get(id=self.request.data.get("type"))
+        serializer.save(user=self.request.user, type=type, tier=tier)
 
 
 class DecotionViewSet(BaseViewSet):

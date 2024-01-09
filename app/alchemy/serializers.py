@@ -23,24 +23,24 @@ class BaseAlchemyElementSerializer(serializers.ModelSerializer):
 
 
 class DecotionSerializer(serializers.ModelSerializer):
-    class Meta(BaseAlchemyElementSerializer):
+    class Meta(BaseAlchemyElementSerializer.Meta):
         model = Decotion
         fields = BaseAlchemyElementSerializer.Meta.fields + ["tox_points"]
 
 
 class PotionSerializer(serializers.ModelSerializer):
-    class Meta(BaseAlchemyElementSerializer):
+    class Meta(BaseAlchemyElementSerializer.Meta):
         model = Potion
         fields = BaseAlchemyElementSerializer.Meta.fields + ["tox_points"]
 
 
 class OilSerializer(serializers.ModelSerializer):
-    class Meta(BaseAlchemyElementSerializer):
+    class Meta(BaseAlchemyElementSerializer.Meta):
         model = Oil
         fields = BaseAlchemyElementSerializer.Meta.fields + ["attack_bonus_perc"]
 
 
 class BombSerializer(serializers.ModelSerializer):
-    class Meta(BaseAlchemyElementSerializer):
+    class Meta(BaseAlchemyElementSerializer.Meta):
         model = Bomb
         fields = BaseAlchemyElementSerializer.Meta.fields
