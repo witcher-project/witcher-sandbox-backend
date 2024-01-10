@@ -1,13 +1,13 @@
 from uuid import uuid4
 
-from alchemy.models import Bomb, Decotion, Oil, Potion
+from alchemy.models import BaseAlchemyElement, Bomb, Decotion, Oil, Potion
 from alchemy.serializers import (
     BombSerializer,
     DecotionSerializer,
     OilSerializer,
     PotionSerializer,
 )
-from core.models import BaseAlchemyElement, Tier, Type
+from core.models import Tier, Type
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 

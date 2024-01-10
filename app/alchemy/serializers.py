@@ -1,5 +1,4 @@
-from alchemy.models import Bomb, Decotion, Oil, Potion
-from core.models import BaseAlchemyElement
+from alchemy.models import BaseAlchemyElement, Bomb, Decotion, Oil, Potion
 from rest_framework import serializers
 
 

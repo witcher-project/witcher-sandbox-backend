@@ -25,17 +25,6 @@ class BaseItem(models.Model):
         return self.name
 
 
-class BaseAlchemyElement(BaseItem):
-    wgt = None
-    lvl = None
-    effect = models.CharField(max_length=2000)
-    charges = models.PositiveSmallIntegerField(default=1)
-    duration_sec = models.PositiveIntegerField(default=1800)
-
-    class Meta:
-        abstract = True
-
-
 class Tier(models.Model):
     name = models.CharField(max_length=100, unique=True)
     color_hex = models.CharField(max_length=6, default="FFFFFF")

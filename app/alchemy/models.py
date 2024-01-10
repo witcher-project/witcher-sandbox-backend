@@ -1,5 +1,16 @@
-from core.models import BaseAlchemyElement
+from core.models import BaseItem
 from django.db import models
+
+
+class BaseAlchemyElement(BaseItem):
+    wgt = None
+    lvl = None
+    effect = models.CharField(max_length=2000)
+    charges = models.PositiveSmallIntegerField(default=1)
+    duration_sec = models.PositiveIntegerField(default=1800)
+
+    class Meta:
+        abstract = True
 
 
 class Decotion(BaseAlchemyElement):
