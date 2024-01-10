@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from alchemy.models import Bomb, Decotion, Oil, Potion
 from alchemy.serializers import (
     BombSerializer,
@@ -83,7 +85,11 @@ def create_alchemy_element(user: get_user_model(), alchemy_model: type, **params
         "source": f"Same {alchemy_model.__name__.lower()} source",
         "link": f"Same {alchemy_model.__name__.lower()} link",
         "effect": f"Same {alchemy_model.__name__.lower()} effect",
+        "game_id": f"{alchemy_model.__name__.lower()}_{str(uuid4())[:8]}",
+        "craftable": True,
+        "dismantlable": True,
     }
+
     defaults.update(params)
     alchemy_element = alchemy_model.objects.create(**defaults)
     return alchemy_element

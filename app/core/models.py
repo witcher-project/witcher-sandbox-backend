@@ -3,6 +3,7 @@ from django.db import models
 
 
 class BaseItem(models.Model):
+    game_id = models.CharField(unique=True, max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     img = models.ImageField(upload_to="items/", default="assets/default_item.png", null=True)
     name = models.CharField(max_length=500)
@@ -13,6 +14,8 @@ class BaseItem(models.Model):
     price = models.PositiveIntegerField()
     source = models.CharField(max_length=2000)
     link = models.CharField(max_length=2000, blank=True, null=True)
+    craftable = models.BooleanField(default=False, blank=True)
+    dismantlable = models.BooleanField(default=False, blank=True)
     # more info about item (usually points to WitcherFandom)
 
     class Meta:

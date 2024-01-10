@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -134,6 +136,9 @@ class PrivateAlchemyAPITest(TestCase):
                 "source": f"Put {element.__class__.__name__.lower()} source",
                 "link": f"Put {element.__class__.__name__.lower()} link",
                 "effect": f"Put {element.__class__.__name__.lower()} effect",
+                "game_id": f"{element.__class__.__name__.lower()}_{str(uuid4())[:8]}",
+                "craftable": True,
+                "dismantlable": True,
             }
             res = self.client.put(url, payload)
 

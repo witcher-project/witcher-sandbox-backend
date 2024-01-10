@@ -8,6 +8,7 @@ class BaseAlchemyElementSerializer(serializers.ModelSerializer):
         model = BaseAlchemyElement
         fields = [
             "id",
+            "game_id",
             "img",
             "name",
             "tier",
@@ -18,6 +19,8 @@ class BaseAlchemyElementSerializer(serializers.ModelSerializer):
             "effect",
             "charges",
             "duration_sec",
+            "craftable",
+            "dismantlable",
         ]
         read_only_fields = ["id"]
 
