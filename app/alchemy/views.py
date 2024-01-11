@@ -1,30 +1,8 @@
 from alchemy import serializers
 from alchemy.models import Bomb, Decotion, Oil, Potion
-from core.models import Tier, Type
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework_simplejwt.authentication import JWTAuthentication
-
-from .permissions import IsOwnerOfObject
-
-
-class BaseViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-
-    def get_permissions(self):
-        if self.action in ["list", "retrieve"]:
-            permission_classes = [IsAuthenticatedOrReadOnly]
-        else:
-            permission_classes = [IsAuthenticated, IsOwnerOfObject]
-        return [permission() for permission in permission_classes]
-
-    def get_queryset(self):
-        return self.queryset.order_by("-id")
-
-    def perform_create(self, serializer):
-        type = Type.objects.get(id=self.request.data.get("tier"))
-        tier = Tier.objects.get(id=self.request.data.get("type"))
-        serializer.save(user=self.request.user, type=type, tier=tier)
+from core.views import BaseViewSet
+from items.models import CraftingComponent
+from items.serializers import CraftingComponentSerializer
 
 
 class DecotionViewSet(BaseViewSet):
@@ -45,3 +23,15 @@ class OilViewSet(BaseViewSet):
 class BombViewSet(BaseViewSet):
     serializer_class = serializers.BombSerializer
     queryset = Bomb.objects.all()
+
+
+class IngredientsViewSet(BaseViewSet):
+    # serializer_class = serializers.BaseAlchemyElementSerializer
+    # queryset = CraftComponent.objects.all()
+    serializer_class = CraftingComponentSerializer
+    queryset = CraftingComponent.objects.all()
+
+    # queryset = CraftComponent.objects.filter(craft_type=CraftComponent.CraftType.ALCHEMY)
+
+    # def get_queryset(self):
+    #     return CraftComponent.objects.filter(craft_type=CraftComponent.CraftType.ALCHEMY)

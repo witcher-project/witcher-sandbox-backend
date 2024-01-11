@@ -1,128 +1,239 @@
 from uuid import uuid4
 
-from alchemy.models import BaseAlchemyElement, Bomb, Decotion, Oil, Potion
+from alchemy.models import Bomb, Decotion, Oil, Potion
 from alchemy.serializers import (
     BombSerializer,
     DecotionSerializer,
     OilSerializer,
     PotionSerializer,
 )
-from core.models import Tier, Type
+from core.tests.utils import CoreTestManager
 from django.contrib.auth import get_user_model
+from django.db.models import Model
 from django.urls import reverse
 
-# URLs for alchemy endpoints
-DECOTIONS_URL = reverse("alchemy:decotion-list")
-POTIONS_URL = reverse("alchemy:potion-list")
-OILS_URL = reverse("alchemy:oil-list")
-BOMBS_URL = reverse("alchemy:bomb-list")
 
-
-def element_list(model: type) -> str:
-    """Generate the URL for listing elements of a specific model."""
-    return reverse(f"alchemy:{model.__name__.lower()}-list")
-
-
-def element_detail(model: type, id: int) -> str:
-    """Generate the URL for retrieving details of an element of a specific model by its ID."""
-    return reverse(f"alchemy:{model.__name__.lower()}-detail", args=[id])
-
-
-def create_tier(**params) -> Tier:
-    """Create or get an existing Tier instance."""
-    return Tier.objects.get_or_create(**params)
-
-
-def create_type(**params) -> Type:
-    """Create or get an existing Type instance."""
-    return Type.objects.get_or_create(**params)
-
-
-def create_user(**params) -> get_user_model():
-    """Create a new user instance."""
-    return get_user_model().objects.create(**params)
-
-
-def create_decotion(user, **params) -> Decotion:
-    """Create a new Decotion instance."""
-    return create_alchemy_element(user, Decotion, **params)
-
-
-def create_potion(user, **params) -> Potion:
-    """Create a new Potion instance."""
-    return create_alchemy_element(user, Potion, **params)
-
-
-def create_oil(user, **params) -> Oil:
-    """Create a new Oil instance."""
-    return create_alchemy_element(user, Oil, **params)
-
-
-def create_bomb(user, **params) -> Bomb:
-    """Create a new Bomb instance."""
-    return create_alchemy_element(user, Bomb, **params)
-
-
-def create_alchemy_element(user: get_user_model(), alchemy_model: type, **params) -> BaseAlchemyElement:
+class AlchemyTestManager:
     """
-    Create a new instance of an alchemy element.
+    Test manager for the Alchemy app.
 
-    Args:
-        user: The user associated with the alchemy element.
-        alchemy_model: The specific alchemy model (Decotion, Potion, Oil, or Bomb).
-        params: Additional parameters for creating the alchemy element.
+    This class provides methods to create and manage instances of alchemy-related models
+    like Bomb, Decotion, Oil, and Potion. It includes functionalities for instance creation,
+    serialization, and URL generation for these models.
 
-    Returns:
-        The created alchemy element instance.
+    Attributes:
+        core_manager (CoreTestManager): An instance of CoreTestManager for core functionalities.
+        user (User): A user instance created for testing purposes.
     """
-    defaults = {
-        "user": user,
-        "name": f"Sample {alchemy_model.__name__.lower()} name",
-        "img": None,  # temporary exclude default img
-        "tier": create_tier(id=99999, name="Test Tier", color_hex="ffffff")[0],
-        "type": create_type(id=99999, name="Test Type")[0],
-        "price": 100,
-        "source": f"Same {alchemy_model.__name__.lower()} source",
-        "link": f"Same {alchemy_model.__name__.lower()} link",
-        "effect": f"Same {alchemy_model.__name__.lower()} effect",
-        "game_id": f"{alchemy_model.__name__.lower()}_{str(uuid4())[:8]}",
-        "craftable": True,
-        "dismantlable": True,
-    }
 
-    defaults.update(params)
-    alchemy_element = alchemy_model.objects.create(**defaults)
-    return alchemy_element
+    def __init__(self) -> None:
+        self.core_manager = CoreTestManager()
+        self.user = self.core_manager.create_user(email="alchemy.test.user@example.com", password="testpass")
 
+    def instance_list(self, model: Model) -> str:
+        """
+        Generate the URL for listing instances of a specific model.
 
-def get_alchemy_item_type_definitions() -> list:
-    """
-    Get the definitions for different alchemy item types.
+        Args:
+            model (Model): The Django model class for which to generate the list URL.
 
-    Returns:
-        List: A list of tuples containing URL, model, serializer, and creation function for each alchemy item type.
-    """
-    return [
-        (DECOTIONS_URL, Decotion.objects, DecotionSerializer, create_decotion),
-        (POTIONS_URL, Potion.objects, PotionSerializer, create_potion),
-        (OILS_URL, Oil.objects, OilSerializer, create_oil),
-        (BOMBS_URL, Bomb.objects, BombSerializer, create_bomb),
-    ]
+        Returns:
+            str: The URL for listing instances of the specified model.
 
+        Raises:
+            ValueError: If the provided model is not recognized.
+        """
 
-def get_initial_alchemy_item_data(user) -> list:
-    """
-    Get the initial data for alchemy items.
+        model_to_url = {
+            Bomb: "alchemy:bombs-list",
+            Decotion: "alchemy:decotions-list",
+            Oil: "alchemy:oils-list",
+            Potion: "alchemy:potions-list",
+        }
+        try:
+            return reverse(model_to_url[model])
+        except KeyError:
+            raise ValueError(f"Unknown model: {model}")
 
-    Args:
-        user: The user for whom the initial alchemy items are created.
+    @staticmethod
+    def instance_detail(model: type, id: int) -> str:
+        """
+        Generate the URL for retrieving details of an instance of a specific model by its ID.
 
-    Returns:
-        List: A list of tuples containing initial data, model, and serializer for each alchemy item.
-    """
-    return [
-        (create_decotion(user), Decotion, DecotionSerializer),
-        (create_potion(user), Potion, PotionSerializer),
-        (create_oil(user), Oil, OilSerializer),
-        (create_bomb(user), Bomb, BombSerializer),
-    ]
+        Args:
+            model (type): The Django model class for which to generate the detail URL.
+            id (int): The ID of the instance for which to generate the URL.
+
+        Returns:
+            str: The URL for retrieving details of the specified model instance.
+
+        Raises:
+            ValueError: If the provided model is not recognized.
+        """
+
+        model_to_url = {
+            Bomb: "alchemy:bombs-detail",
+            Decotion: "alchemy:decotions-detail",
+            Oil: "alchemy:oils-detail",
+            Potion: "alchemy:potions-detail",
+        }
+        try:
+            return reverse(model_to_url[model], args=[id])
+        except KeyError:
+            raise ValueError(f"Unknown model: {model}")
+
+    def create_decotion(self, user, **params) -> Decotion:
+        """Create a new Decotion instance."""
+        return self._create_instance(user, Decotion, **params)
+
+    def create_potion(self, user, **params) -> Potion:
+        """Create a new Potion instance."""
+        return self._create_instance(user, Potion, **params)
+
+    def create_oil(self, user, **params) -> Oil:
+        """Create a new Oil instance."""
+        return self._create_instance(user, Oil, **params)
+
+    def create_bomb(self, user, **params) -> Bomb:
+        """Create a new Bomb instance."""
+        return self._create_instance(user, Bomb, **params)
+
+    def _create_instance(self, user: get_user_model(), model: Model, **params: dict):
+        """
+        Private method to create an instance of a given model with specified parameters.
+
+        This method is used internally to create instances of models with default and additional parameters.
+
+        Args:
+            user (User): The user associated with the model instance.
+            model (Model): The Django model class for the instance.
+            **params (dict): Additional parameters for the instance.
+
+        Returns:
+            An instance of the specified model.
+        """
+
+        # private in order to avoid unexcpected model for which we don't have a payload
+        payload = self.get_default_model_payload(model)
+        payload.update(**params)
+        instance = model.objects.create(user=user, **payload)
+        return instance
+
+    def serialize_instance(self, instance):
+        """
+        Serialize a model instance using the appropriate serializer.
+
+        This method finds the correct serializer for a given model instance from the model_serializer_map
+        and then returns the serialized data.
+
+        Args:
+            instance (Model instance): The instance to be serialized.
+
+        Returns:
+            dict: The serialized data of the instance.
+        """
+
+        model_serializer_map = {
+            Bomb: BombSerializer,
+            Decotion: DecotionSerializer,
+            Oil: OilSerializer,
+            Potion: PotionSerializer,
+        }
+        serializer_class = model_serializer_map[type(instance)]
+        serializer = serializer_class(instance=instance)
+        return serializer.data
+
+    def get_default_model_payload(self, model: Model) -> dict:
+        """
+        Get the default payload for creating an instance of a specific model.
+
+        This method returns a set of default values for creating instances of various models
+        in the Alchemy app.
+
+        Args:
+            model (Model): The Django model class for which to generate the default payload.
+
+        Returns:
+            dict: A dictionary containing default values for the model instance.
+
+        Raises:
+            ValueError: If the model is not supported or recognized.
+        """
+        if model == Bomb:
+            return {
+                "name": "Test bomb",
+                "img": None,
+                "tier": self.core_manager.default_tier,
+                "type": self.core_manager.default_type,
+                "price": 777,
+                "link": "Test bomb link",
+                "game_id": f"test_bomb_{str(uuid4())[:8]}",
+                "craftable": True,
+                "dismantlable": False,
+                "effect": "Test bomb effect",
+                "charges": 3,
+                "duration_sec": 10,
+            }
+        elif model == Decotion:
+            return {
+                "name": "Test Decotion",
+                "img": None,
+                "tier": self.core_manager.default_tier,
+                "type": self.core_manager.default_type,
+                "price": 777,
+                "link": "Test Decotion link",
+                "game_id": f"test_decotion_{str(uuid4())[:8]}",
+                "craftable": True,
+                "dismantlable": False,
+                "effect": "Test Decotion effect",
+                "tox_points": 70,
+                "charges": 1,
+                "duration_sec": 3600,
+            }
+        elif model == Oil:
+            return {
+                "name": "Test Oil",
+                "img": None,
+                "tier": self.core_manager.default_tier,
+                "type": self.core_manager.default_type,
+                "price": 777,
+                "link": "Test Oil link",
+                "game_id": f"test_oil_{str(uuid4())[:8]}",
+                "craftable": True,
+                "dismantlable": False,
+                "effect": "Test Oil effect",
+                "charges": 30,
+                "attack_bonus_perc": 15,
+            }
+        elif model == Potion:
+            return {
+                "name": "Test Potion",
+                "img": None,
+                "tier": self.core_manager.default_tier,
+                "type": self.core_manager.default_type,
+                "price": 777,
+                "link": "Test Potion link",
+                "game_id": f"test_potion_{str(uuid4())[:8]}",
+                "craftable": True,
+                "dismantlable": False,
+                "effect": "Test Potion effect",
+                "tox_points": 25,
+                "charges": 3,
+                "duration_sec": 45,
+            }
+        else:
+            raise ValueError(f"Unsupported model: {model.__name__}")
+
+    def get_models_creation_map(self):
+        """
+        Get a mapping of models to their corresponding creation methods.
+
+        Returns:
+            dict: A dictionary mapping model classes to their respective creation methods.
+        """
+        return {
+            Bomb: self.create_bomb,
+            Decotion: self.create_decotion,
+            Oil: self.create_oil,
+            Potion: self.create_potion,
+        }

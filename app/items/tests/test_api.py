@@ -1,30 +1,34 @@
 from django.test import TestCase
+from items.models import RecipeComponent
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from .utils import AlchemyTestManager
+from .utils import ItemsTestManager
 
 
-class PrivateAclhemyAPITest(TestCase):
+class PrivateItemsAPITest(TestCase):
     """Test authenticated API request"""
 
     def setUp(self):
         self.client = APIClient()
-        self.manager = AlchemyTestManager()
+        self.manager = ItemsTestManager()
         self.client.force_authenticate(self.manager.user)
 
     def create_test_instances(self):
+        no_user_models = [RecipeComponent]
         models_map = self.manager.get_models_creation_map()
 
         instances = []
-
-        for _, create in models_map.items():
-            model_instance = create(self.manager.user)
+        for model, create in models_map.items():
+            if model not in no_user_models:
+                model_instance = create(self.manager.user)
+            else:
+                model_instance = create()
             instances.append(model_instance)
 
         return instances
 
-    def test_get_alchemy_model_list(self):
+    def test_get_items_model_list(self):
         """
         Test retrieving a list of items.
         """
@@ -37,7 +41,7 @@ class PrivateAclhemyAPITest(TestCase):
             self.assertEqual(res.status_code, status.HTTP_200_OK)
             self.assertIsInstance(res.data, list)
 
-    def test_get_alchemy_model_detail(self):
+    def test_get_items_model_detail(self):
         """
         Test retrieving a single item detail.
         """
@@ -50,7 +54,7 @@ class PrivateAclhemyAPITest(TestCase):
             self.assertEqual(res.status_code, status.HTTP_200_OK)
             self.assertEqual(res.data["id"], instance.id)
 
-    def test_post_alchemy_model(self):
+    def test_post_items_model(self):
         """
         Do POST request for each model.
         """
@@ -66,7 +70,7 @@ class PrivateAclhemyAPITest(TestCase):
             )
             self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-    def test_put_alchemy_model(self):
+    def test_put_items_model(self):
         """
         Test updating an item with PUT.
         """
@@ -80,7 +84,7 @@ class PrivateAclhemyAPITest(TestCase):
 
             self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-    def test_patch_alchemy_model(self):
+    def test_patch_items_model(self):
         """
         Test updating an item with PATCH.
         """
@@ -94,7 +98,7 @@ class PrivateAclhemyAPITest(TestCase):
 
             self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-    def test_delete_alchemy_model(self):
+    def test_delete_items_model(self):
         """
         Do DELETE request for each model.
         """

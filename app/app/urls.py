@@ -14,6 +14,7 @@ urlpatterns = [
     ),
     path("api/users/", include("users.urls")),
     path("api/alchemy/", include("alchemy.urls")),
+    path("api/items/", include("items.urls")),
 ]
 
 if settings.DEBUG:
