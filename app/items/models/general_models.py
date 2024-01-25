@@ -13,6 +13,7 @@ class BaseItem(PolymorphicModel):
     game_id = models.CharField(unique=True, max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
+    description = models.CharField(max_length=3000, blank=True, null=True)
     tier = models.ForeignKey("core.Tier", on_delete=models.PROTECT)
     type = models.ForeignKey("core.Type", on_delete=models.PROTECT)
     weight = models.PositiveSmallIntegerField(default=0, blank=True)
@@ -20,7 +21,7 @@ class BaseItem(PolymorphicModel):
     link = models.CharField(max_length=2000, blank=True, null=True)
     craftable = models.BooleanField(default=False, blank=True)
     dismantlable = models.BooleanField(default=False, blank=True)
-    # more info about item (usually points to WitcherFandom)
+    usable = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name

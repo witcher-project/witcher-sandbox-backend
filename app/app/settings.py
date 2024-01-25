@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "core",
     "users",
     "items",
-    "alchemy",
 ]
 
 MIDDLEWARE = [

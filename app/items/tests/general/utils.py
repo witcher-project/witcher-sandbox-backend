@@ -4,8 +4,15 @@ from core.tests.utils import CoreTestManager
 from django.contrib.auth import get_user_model
 from django.db.models import Model
 from django.urls import reverse
-from items.models import BaseItem, CraftingComponent, Recipe, RecipeComponent, Source
-from items.serializers import (
+
+from ...models.general_models import (
+    BaseItem,
+    CraftingComponent,
+    Recipe,
+    RecipeComponent,
+    Source,
+)
+from ...serializers.general_serializers import (
     CraftingComponentSerializer,
     RecipeComponentSerializer,
     RecipeSerializer,
@@ -49,10 +56,10 @@ class ItemsTestManager:
         """
 
         model_to_url = {
-            CraftingComponent: "items:crafting-components-list",
-            Recipe: "items:recipes-list",
-            RecipeComponent: "items:recipes-components-list",
-            Source: "items:sources-list",
+            CraftingComponent: "items:general:crafting-components-list",
+            Recipe: "items:general:recipes-list",
+            RecipeComponent: "items:general:recipes-components-list",
+            Source: "items:general:sources-list",
         }
         try:
             return reverse(model_to_url[model])
@@ -76,10 +83,10 @@ class ItemsTestManager:
         """
 
         model_to_url = {
-            CraftingComponent: "items:crafting-components-detail",
-            Recipe: "items:recipes-detail",
-            RecipeComponent: "items:recipes-components-detail",
-            Source: "items:sources-detail",
+            CraftingComponent: "items:general:crafting-components-detail",
+            Recipe: "items:general:recipes-detail",
+            RecipeComponent: "items:general:recipes-components-detail",
+            Source: "items:general:sources-detail",
         }
         try:
             return reverse(model_to_url[model], args=[id])
@@ -184,6 +191,7 @@ class ItemsTestManager:
         if model == BaseItem:
             return {
                 "name": "Test Base item",
+                "description": "Test BaseItem description",
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
                 "price": 777,
@@ -195,6 +203,7 @@ class ItemsTestManager:
         elif model == CraftingComponent:
             return {
                 "name": "Test Crafting component",
+                "description": "Test CraftingComponent description",
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
                 "price": 777,

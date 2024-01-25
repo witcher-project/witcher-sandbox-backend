@@ -1,10 +1,12 @@
-from alchemy.models import BaseAlchemyItem, Bomb, Decotion, Oil, Potion
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
+
+from ..interfaces import alchemy_interfaces
+from ..models.alchemy_models import Bomb, Decotion, Oil, Potion
 
 
-class BaseAlchemyItemSerializer(serializers.ModelSerializer):
+class BaseAlchemyItemSerializer(ModelSerializer):
     class Meta:
-        model = BaseAlchemyItem
+        model = alchemy_interfaces.BaseAlchemyItemInterface
         fields = [
             "id",
             "game_id",
@@ -17,22 +19,22 @@ class BaseAlchemyItemSerializer(serializers.ModelSerializer):
             "craftable",
             "dismantlable",
             "sources",
-            "effect",
             "charges",
-            "duration_sec",
         ]
+
+    abstract = True
 
 
 class DecotionSerializer(BaseAlchemyItemSerializer):
     class Meta(BaseAlchemyItemSerializer.Meta):
         model = Decotion
-        fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points"]
+        fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points", "duration_sec"]
 
 
 class PotionSerializer(BaseAlchemyItemSerializer):
     class Meta(BaseAlchemyItemSerializer.Meta):
         model = Potion
-        fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points"]
+        fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points", "duration_sec"]
 
 
 class OilSerializer(BaseAlchemyItemSerializer):
@@ -44,4 +46,12 @@ class OilSerializer(BaseAlchemyItemSerializer):
 class BombSerializer(BaseAlchemyItemSerializer):
     class Meta(BaseAlchemyItemSerializer.Meta):
         model = Bomb
-        fields = BaseAlchemyItemSerializer.Meta.fields
+        fields = BaseAlchemyItemSerializer.Meta.fields + ["duration_sec"]
+
+
+model_serializer_mapping = {
+    Decotion: DecotionSerializer,
+    Potion: PotionSerializer,
+    Oil: OilSerializer,
+    Bomb: BombSerializer,
+}

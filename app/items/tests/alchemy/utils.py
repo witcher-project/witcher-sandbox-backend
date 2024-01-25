@@ -1,16 +1,12 @@
 from uuid import uuid4
 
-from alchemy.models import Bomb, Decotion, Oil, Potion
-from alchemy.serializers import (
-    BombSerializer,
-    DecotionSerializer,
-    OilSerializer,
-    PotionSerializer,
-)
 from core.tests.utils import CoreTestManager
 from django.contrib.auth import get_user_model
 from django.db.models import Model
 from django.urls import reverse
+
+from ...models.alchemy_models import Bomb, Decotion, Oil, Potion
+from ...serializers.alchemy_serializers import model_serializer_mapping
 
 
 class AlchemyTestManager:
@@ -45,10 +41,10 @@ class AlchemyTestManager:
         """
 
         model_to_url = {
-            Bomb: "alchemy:bombs-list",
-            Decotion: "alchemy:decotions-list",
-            Oil: "alchemy:oils-list",
-            Potion: "alchemy:potions-list",
+            Bomb: "items:alchemy:bombs-list",
+            Decotion: "items:alchemy:decotions-list",
+            Oil: "items:alchemy:oils-list",
+            Potion: "items:alchemy:potions-list",
         }
         try:
             return reverse(model_to_url[model])
@@ -72,10 +68,10 @@ class AlchemyTestManager:
         """
 
         model_to_url = {
-            Bomb: "alchemy:bombs-detail",
-            Decotion: "alchemy:decotions-detail",
-            Oil: "alchemy:oils-detail",
-            Potion: "alchemy:potions-detail",
+            Bomb: "items:alchemy:bombs-detail",
+            Decotion: "items:alchemy:decotions-detail",
+            Oil: "items:alchemy:oils-detail",
+            Potion: "items:alchemy:potions-detail",
         }
         try:
             return reverse(model_to_url[model], args=[id])
@@ -133,13 +129,7 @@ class AlchemyTestManager:
             dict: The serialized data of the instance.
         """
 
-        model_serializer_map = {
-            Bomb: BombSerializer,
-            Decotion: DecotionSerializer,
-            Oil: OilSerializer,
-            Potion: PotionSerializer,
-        }
-        serializer_class = model_serializer_map[type(instance)]
+        serializer_class = model_serializer_mapping[type(instance)]
         serializer = serializer_class(instance=instance)
         return serializer.data
 
@@ -162,6 +152,7 @@ class AlchemyTestManager:
         if model == Bomb:
             return {
                 "name": "Test bomb",
+                "description": "Test Bomb description",
                 "img": None,
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
@@ -170,13 +161,13 @@ class AlchemyTestManager:
                 "game_id": f"test_bomb_{str(uuid4())[:8]}",
                 "craftable": True,
                 "dismantlable": False,
-                "effect": "Test bomb effect",
                 "charges": 3,
                 "duration_sec": 10,
             }
         elif model == Decotion:
             return {
                 "name": "Test Decotion",
+                "description": "Test Decotion description",
                 "img": None,
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
@@ -185,7 +176,6 @@ class AlchemyTestManager:
                 "game_id": f"test_decotion_{str(uuid4())[:8]}",
                 "craftable": True,
                 "dismantlable": False,
-                "effect": "Test Decotion effect",
                 "tox_points": 70,
                 "charges": 1,
                 "duration_sec": 3600,
@@ -193,6 +183,7 @@ class AlchemyTestManager:
         elif model == Oil:
             return {
                 "name": "Test Oil",
+                "description": "Test Oil description",
                 "img": None,
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
@@ -201,13 +192,13 @@ class AlchemyTestManager:
                 "game_id": f"test_oil_{str(uuid4())[:8]}",
                 "craftable": True,
                 "dismantlable": False,
-                "effect": "Test Oil effect",
                 "charges": 30,
                 "attack_bonus_perc": 15,
             }
         elif model == Potion:
             return {
                 "name": "Test Potion",
+                "description": "Test Potion description",
                 "img": None,
                 "tier": self.core_manager.default_tier,
                 "type": self.core_manager.default_type,
@@ -216,7 +207,6 @@ class AlchemyTestManager:
                 "game_id": f"test_potion_{str(uuid4())[:8]}",
                 "craftable": True,
                 "dismantlable": False,
-                "effect": "Test Potion effect",
                 "tox_points": 25,
                 "charges": 3,
                 "duration_sec": 45,

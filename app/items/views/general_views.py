@@ -1,27 +1,28 @@
 from core.views import BaseViewSet
 from django.http import Http404
-from items import serializers
-from items.models import CraftingComponent, Recipe, RecipeComponent, Source
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
+from ..models.general_models import CraftingComponent, Recipe, RecipeComponent, Source
+from ..serializers import general_serializers
 
 
 class CraftingComponentViewSet(BaseViewSet):
-    serializer_class = serializers.CraftingComponentSerializer
+    serializer_class = general_serializers.CraftingComponentSerializer
     queryset = CraftingComponent.objects.all()
 
 
 class RecipeViewSet(BaseViewSet):
-    serializer_class = serializers.RecipeSerializer
+    serializer_class = general_serializers.RecipeSerializer
     queryset = Recipe.objects.all()
 
 
 class SourceViewSet(BaseViewSet):
-    serializer_class = serializers.SourceSerializer
+    serializer_class = general_serializers.SourceSerializer
     queryset = Source.objects.all()
 
 
 class RecipeComponentViewSet(BaseViewSet):
-    serializer_class = serializers.RecipeComponentSerializer
+    serializer_class = general_serializers.RecipeComponentSerializer
     queryset = RecipeComponent.objects.all()
 
     def get_permissions(self):

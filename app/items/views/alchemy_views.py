@@ -1,27 +1,28 @@
-from alchemy import serializers
-from alchemy.models import Bomb, Decotion, Oil, Potion
 from core.views import BaseViewSet
-from items.models import CraftingComponent
-from items.serializers import CraftingComponentSerializer
+
+from ..models.alchemy_models import Bomb, Decotion, Oil, Potion
+from ..models.general_models import CraftingComponent
+from ..serializers import alchemy_serializers
+from ..serializers.general_serializers import CraftingComponentSerializer
 
 
 class DecotionViewSet(BaseViewSet):
-    serializer_class = serializers.DecotionSerializer
+    serializer_class = alchemy_serializers.DecotionSerializer
     queryset = Decotion.objects.all()
 
 
 class PotionViewSet(BaseViewSet):
-    serializer_class = serializers.PotionSerializer
+    serializer_class = alchemy_serializers.PotionSerializer
     queryset = Potion.objects.all()
 
 
 class OilViewSet(BaseViewSet):
-    serializer_class = serializers.OilSerializer
+    serializer_class = alchemy_serializers.OilSerializer
     queryset = Oil.objects.all()
 
 
 class BombViewSet(BaseViewSet):
-    serializer_class = serializers.BombSerializer
+    serializer_class = alchemy_serializers.BombSerializer
     queryset = Bomb.objects.all()
 
 

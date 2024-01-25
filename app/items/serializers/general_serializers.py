@@ -1,24 +1,18 @@
-from alchemy.models import Bomb, Decotion, Oil, Potion
-from alchemy.serializers import (
-    BombSerializer,
-    DecotionSerializer,
-    OilSerializer,
-    PotionSerializer,
-)
-from items.models import BaseItem, CraftingComponent, Recipe, RecipeComponent, Source
 from rest_framework import serializers
 from rest_polymorphic.serializers import PolymorphicSerializer
 
+from ..models.general_models import (
+    BaseItem,
+    CraftingComponent,
+    Recipe,
+    RecipeComponent,
+    Source,
+)
+from .alchemy_serializers import model_serializer_mapping
+
 
 class ItemsPolymorphicSerializer(PolymorphicSerializer):
-    model_serializer_mapping = (
-        {
-            Decotion: DecotionSerializer,
-            Potion: PotionSerializer,
-            Oil: OilSerializer,
-            Bomb: BombSerializer,
-        },
-    )
+    model_serializer_mapping = (model_serializer_mapping,)
 
 
 class SourceSerializer(serializers.ModelSerializer):
@@ -37,6 +31,7 @@ class BaseItemSerializer(serializers.ModelSerializer):
             "id",
             "game_id",
             "name",
+            "description",
             "tier",
             "type",
             "price",
