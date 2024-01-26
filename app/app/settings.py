@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_api_key",
     "drf_spectacular",
     "polymorphic",
-    # "django.contrib.contenttypes",
     "core",
     "users",
     "items",
@@ -144,3 +144,5 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+API_KEY_CUSTOM_HEADER = "HTTP_API_KEY"
