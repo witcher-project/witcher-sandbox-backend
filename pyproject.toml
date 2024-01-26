@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "witcher3-api"
+version = "0.1.0"
+description = ""
+authors = ["Baclrary <ihorprotsak@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "3.2.4"
+django-polymorphic = "3.1.0"
+django-rest-polymorphic = "0.1.10"
+djangorestframework = "3.13"
+djangorestframework-simplejwt = "^5.3.1"
+djangorestframework-api-key = "^3.0.0"
+psycopg2 = "2.8.6"
+drf-spectacular = "^0.27.0"
+pillow = "10.2.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "6.1.0"
+pre-commit = "3.6.0"
+black = "23.12.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
