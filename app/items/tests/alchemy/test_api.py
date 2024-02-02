@@ -5,8 +5,8 @@ from rest_framework.test import APIClient
 from .utils import AlchemyTestManager
 
 
-class PrivateAclhemyAPITest(TestCase):
-    """Test authenticated API request"""
+class AclhemyAPITest(TestCase):
+    """Test API request"""
 
     def setUp(self):
         self.client = APIClient()

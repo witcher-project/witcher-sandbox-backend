@@ -38,7 +38,9 @@ class CraftingComponent(BaseItem):
         BOTH = "both", "Both"
 
     img = models.ImageField(
-        upload_to="items/craft_components/", default="assets/items/default_craft_component.png", null=True
+        upload_to="uploads/items/general/craft_components/",
+        default="assets/items/default_craft_component.png",
+        null=True,
     )
     craft_type = models.CharField(max_length=50, choices=CraftType.choices)
 

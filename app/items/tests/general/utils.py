@@ -93,6 +93,33 @@ class ItemsTestManager:
         except KeyError:
             raise ValueError(f"Unknown model: {model}")
 
+    @staticmethod
+    def instance_img_upload(model: type, id: int) -> str:
+        """
+        Generate the URL for image upload for an instance of a specific model by its ID.
+
+        Args:
+            model (type): The Django model class for which to generate the image upload URL.
+            id (int): The ID of the instance for which to generate the URL.
+
+        Returns:
+            str: The URL for retrieving details of the specified model instance.
+
+        Raises:
+            ValueError: If the provided model is not recognized.
+        """
+
+        model_to_url = {
+            CraftingComponent: "items:general:crafting-components-upload-img",
+            Recipe: "items:general:recipes-upload-img",
+            RecipeComponent: "items:general:recipes-components-upload-img",
+            Source: "items:general:sources-upload-img",
+        }
+        try:
+            return reverse(model_to_url[model], args=[id])
+        except KeyError:
+            raise ValueError(f"Unknown model: {model}")
+
     def create_base_item(self, user, **params) -> BaseItem:
         """Create a new BaseItem instance."""
         return self._create_instance(user, BaseItem, **params)

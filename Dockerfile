@@ -3,9 +3,9 @@ LABEL author="baclrary"
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apk add --update --no-cache postgresql-client && \
+RUN apk add --update --no-cache postgresql-client jpeg-dev && \
     apk add --update --no-cache --virtual .tmp-build-deps \
-    build-base postgresql-dev musl-dev libffi-dev
+    build-base postgresql-dev musl-dev libffi-dev zlib zlib-dev
 
 RUN pip install --upgrade pip && \
     pip install poetry
@@ -23,5 +23,10 @@ RUN apk del .tmp-build-deps && \
 
 EXPOSE 8000
 
-RUN adduser --disabled-password --no-create-home django-user
+RUN adduser --disabled-password --no-create-home django-user && \
+    mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 755 /vol
+
 USER django-user

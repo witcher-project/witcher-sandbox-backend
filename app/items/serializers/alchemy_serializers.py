@@ -10,6 +10,7 @@ class BaseAlchemyItemSerializer(ModelSerializer):
         fields = [
             "id",
             "game_id",
+            "img",
             "name",
             "tier",
             "type",

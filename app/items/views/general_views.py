@@ -1,4 +1,4 @@
-from core.views import BaseViewSet
+from core.views import BaseViewSet, BaseViewSetImg
 from django.http import Http404
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
@@ -6,7 +6,8 @@ from ..models.general_models import CraftingComponent, Recipe, RecipeComponent, 
 from ..serializers import general_serializers
 
 
-class CraftingComponentViewSet(BaseViewSet):
+class CraftingComponentViewSet(BaseViewSetImg):
+    model = CraftingComponent
     serializer_class = general_serializers.CraftingComponentSerializer
     queryset = CraftingComponent.objects.all()
 
