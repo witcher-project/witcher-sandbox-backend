@@ -1,3 +1,4 @@
+from core.models import Tier, Type
 from rest_framework import serializers
 from rest_polymorphic.serializers import PolymorphicSerializer
 
@@ -16,6 +17,8 @@ class ItemsPolymorphicSerializer(PolymorphicSerializer):
 
 
 class SourceSerializer(serializers.ModelSerializer):
+    item = serializers.SlugRelatedField(slug_field="game_id", queryset=BaseItem.objects.all())
+
     class Meta:
         model = Source
         fields = ["id", "item", "source", "link"]
@@ -24,6 +27,8 @@ class SourceSerializer(serializers.ModelSerializer):
 
 class BaseItemSerializer(serializers.ModelSerializer):
     sources = SourceSerializer(many=True, required=False)
+    tier = serializers.SlugRelatedField(slug_field="name", queryset=Tier.objects.all())
+    type = serializers.SlugRelatedField(slug_field="name", queryset=Type.objects.all())
 
     class Meta:
         model = BaseItem

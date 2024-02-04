@@ -113,6 +113,18 @@ class ItemsAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_filter_craft_component_by_type(self):
+        c1 = self.manager.create_crafting_component(self.manager.user, craft_type="crafting")
+        c2 = self.manager.create_crafting_component(self.manager.user, craft_type="alchemy")
+        c3 = self.manager.create_crafting_component(self.manager.user, craft_type="both")
+
+        params = {"craft_type": "alchemy"}
+        res = self.client.get(self.manager.instance_list(c1.__class__), params)
+
+        self.assertNotIn(self.manager.serialize_instance(c1), res.data)
+        self.assertIn(self.manager.serialize_instance(c2), res.data)
+        self.assertNotIn(self.manager.serialize_instance(c3), res.data)
+
 
 class ItemsImageUploadTest(TestCase):
     """Test API request"""
