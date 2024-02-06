@@ -1,0 +1,16 @@
+site_name: Witcher 3 API
+
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    primary: custom
+    accent: custom
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Welcome: "index.md"
+  - Installation: "installation.md"

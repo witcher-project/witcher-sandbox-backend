@@ -6,6 +6,7 @@ repos:
       - id: end-of-file-fixer
       - id: mixed-line-ending
       - id: check-added-large-files
+        exclude: app/site/
       - id: check-docstring-first
       - id: debug-statements
 
@@ -22,7 +23,7 @@ repos:
     rev: 5.11.5
     hooks:
       - id: isort
-        args: [ "--profile", "black" ]
+        args: ["--profile", "black"]
 
   - repo: https://github.com/hadialqattan/pycln
     rev: v2.1.1

@@ -32,6 +32,14 @@ services:
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
+  docs:
+    build:
+      context: .
+    ports:
+      - "8085:8085"
+    command: >
+      sh -c "mkdocs serve --dirtyreload --dev-addr 0.0.0.0:8085"
+
 volumes:
   dev-db-data:
   dev-static-data:

@@ -9,3 +9,4 @@ exlude =
     __pycache__,
     manage.py,
     settings.py
+    docs
