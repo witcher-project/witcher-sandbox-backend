@@ -1,4 +1,4 @@
-from ..models import Bomb, CraftingComponent, Decotion, Oil, Potion
+from ..models import Bomb, CraftingComponent, Oil, Potion
 from .utils import PriceRangeFilter
 
 general_filterset_fields = [
@@ -10,12 +10,6 @@ general_filterset_fields = [
     "dismantlable",
     "usable",
 ]
-
-
-class DecotionFilter(PriceRangeFilter):
-    class Meta(PriceRangeFilter.Meta):
-        model = Decotion
-        fields = ["duration_sec", "tox_points", "charges"] + general_filterset_fields
 
 
 class PotionFilter(PriceRangeFilter):

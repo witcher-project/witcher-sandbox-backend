@@ -1,4 +1,4 @@
-from items.models import Bomb, CraftingComponent, Decotion, Oil, Potion
+from items.models import Bomb, CraftingComponent, Oil, Potion
 from rest_framework import serializers
 
 
@@ -13,11 +13,6 @@ class BaseImageSerializer(serializers.ModelSerializer):
 class CraftingComponentImageSerializer(BaseImageSerializer):
     class Meta(BaseImageSerializer.Meta):
         model = CraftingComponent
-
-
-class DecotionComponentImageSerializer(BaseImageSerializer):
-    class Meta(BaseImageSerializer.Meta):
-        model = Decotion
 
 
 class PotionComponentImageSerializer(BaseImageSerializer):
@@ -37,7 +32,6 @@ class BombComponentImageSerializer(BaseImageSerializer):
 
 image_serializers_map = {
     CraftingComponent: CraftingComponentImageSerializer,
-    Decotion: DecotionComponentImageSerializer,
     Potion: PotionComponentImageSerializer,
     Oil: OilComponentImageSerializer,
     Bomb: BombComponentImageSerializer,

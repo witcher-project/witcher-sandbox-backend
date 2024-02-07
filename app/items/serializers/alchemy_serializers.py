@@ -1,10 +1,14 @@
-from rest_framework.serializers import ModelSerializer
+from core.models import Tier, Type
+from rest_framework import serializers
 
 from ..interfaces import alchemy_interfaces
-from ..models.alchemy_models import Bomb, Decotion, Oil, Potion
+from ..models.alchemy_models import Bomb, Oil, Potion
+from .fields import SourceField
 
 
-class BaseAlchemyItemSerializer(ModelSerializer):
+class BaseAlchemyItemSerializer(serializers.ModelSerializer):
+    sources = SourceField(many=True, read_only=True)
+
     class Meta:
         model = alchemy_interfaces.BaseAlchemyItemInterface
         fields = [
@@ -26,13 +30,10 @@ class BaseAlchemyItemSerializer(ModelSerializer):
     abstract = True
 
 
-class DecotionSerializer(BaseAlchemyItemSerializer):
-    class Meta(BaseAlchemyItemSerializer.Meta):
-        model = Decotion
-        fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points", "duration_sec"]
-
-
 class PotionSerializer(BaseAlchemyItemSerializer):
+    tier = serializers.SlugRelatedField(slug_field="name", queryset=Tier.objects.all())
+    type = serializers.SlugRelatedField(slug_field="name", queryset=Type.objects.all())
+
     class Meta(BaseAlchemyItemSerializer.Meta):
         model = Potion
         fields = BaseAlchemyItemSerializer.Meta.fields + ["tox_points", "duration_sec"]
@@ -51,7 +52,6 @@ class BombSerializer(BaseAlchemyItemSerializer):
 
 
 model_serializer_mapping = {
-    Decotion: DecotionSerializer,
     Potion: PotionSerializer,
     Oil: OilSerializer,
     Bomb: BombSerializer,

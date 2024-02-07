@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Model
 from django.urls import reverse
 
-from ...models.alchemy_models import Bomb, Decotion, Oil, Potion
+from ...models.alchemy_models import Bomb, Oil, Potion
 from ...serializers.alchemy_serializers import model_serializer_mapping
 
 
@@ -14,7 +14,7 @@ class AlchemyTestManager:
     Test manager for the Alchemy app.
 
     This class provides methods to create and manage instances of alchemy-related models
-    like Bomb, Decotion, Oil, and Potion. It includes functionalities for instance creation,
+    like Bomb, Oil, and Potion. It includes functionalities for instance creation,
     serialization, and URL generation for these models.
 
     Attributes:
@@ -42,7 +42,6 @@ class AlchemyTestManager:
 
         model_to_url = {
             Bomb: "items:alchemy:bombs-list",
-            Decotion: "items:alchemy:decotions-list",
             Oil: "items:alchemy:oils-list",
             Potion: "items:alchemy:potions-list",
         }
@@ -69,7 +68,6 @@ class AlchemyTestManager:
 
         model_to_url = {
             Bomb: "items:alchemy:bombs-detail",
-            Decotion: "items:alchemy:decotions-detail",
             Oil: "items:alchemy:oils-detail",
             Potion: "items:alchemy:potions-detail",
         }
@@ -77,10 +75,6 @@ class AlchemyTestManager:
             return reverse(model_to_url[model], args=[id])
         except KeyError:
             raise ValueError(f"Unknown model: {model}")
-
-    def create_decotion(self, user, **params) -> Decotion:
-        """Create a new Decotion instance."""
-        return self._create_instance(user, Decotion, **params)
 
     def create_potion(self, user, **params) -> Potion:
         """Create a new Potion instance."""
@@ -164,22 +158,6 @@ class AlchemyTestManager:
                 "charges": 3,
                 "duration_sec": 10,
             }
-        elif model == Decotion:
-            return {
-                "name": "Test Decotion",
-                "description": "Test Decotion description",
-                "img": None,
-                "tier": self.core_manager.default_tier,
-                "type": self.core_manager.default_type,
-                "price": 777,
-                "link": "Test Decotion link",
-                "game_id": f"test_decotion_{str(uuid4())[:8]}",
-                "craftable": True,
-                "dismantlable": False,
-                "tox_points": 70,
-                "charges": 1,
-                "duration_sec": 3600,
-            }
         elif model == Oil:
             return {
                 "name": "Test Oil",
@@ -210,6 +188,7 @@ class AlchemyTestManager:
                 "tox_points": 25,
                 "charges": 3,
                 "duration_sec": 45,
+                "potion_type": "potion",
             }
         else:
             raise ValueError(f"Unsupported model: {model.__name__}")
@@ -223,7 +202,6 @@ class AlchemyTestManager:
         """
         return {
             Bomb: self.create_bomb,
-            Decotion: self.create_decotion,
             Oil: self.create_oil,
             Potion: self.create_potion,
         }

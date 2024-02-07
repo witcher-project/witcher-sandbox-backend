@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinValueValidator
 from django.db import models
 from polymorphic.models import PolymorphicModel
 
@@ -16,7 +17,7 @@ class BaseItem(PolymorphicModel):
     description = models.CharField(max_length=3000, blank=True, null=True)
     tier = models.ForeignKey("core.Tier", on_delete=models.PROTECT)
     type = models.ForeignKey("core.Type", on_delete=models.PROTECT)
-    weight = models.PositiveSmallIntegerField(default=0, blank=True)
+    weight = models.FloatField(validators=[MinValueValidator(0.0)], default=0)
     price = models.PositiveIntegerField()
     link = models.CharField(max_length=2000, blank=True, null=True)
     craftable = models.BooleanField(default=False, blank=True)
@@ -66,8 +67,8 @@ class RecipeComponent(models.Model):
 class Source(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_sources")
     item = models.ForeignKey("items.BaseItem", on_delete=models.CASCADE, related_name="sources")
-    source = models.CharField(max_length=400, unique=True)
+    source = models.CharField(max_length=400)
     link = models.URLField(blank=True, null=True)
 
-    def __str__(self):
-        return f"{self.item.name} source"
+    def __str__(self) -> str:
+        return f"Source for {self.item.name}"
