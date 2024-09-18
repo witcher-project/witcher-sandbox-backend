@@ -16,7 +16,7 @@ COPY ./pyproject.toml /app/pyproject.toml
 RUN poetry config virtualenvs.create false && \
     poetry install --no-dev
 
-COPY ./app /app
+COPY . /app
 
 RUN apk del .tmp-build-deps && \
     rm -rf /tmp

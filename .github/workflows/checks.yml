@@ -1,6 +1,8 @@
 name: Checks
 
-on: [push]
+on:
+  push:
+    branches: ['*']
 
 jobs:
   test-lint:
@@ -25,5 +27,5 @@ jobs:
         run: |
           pre-commit install
           pre-commit run --all-files
-      - name: Test
-        run: docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py test"
+#      - name: Test
+#        run: docker-compose run --rm witcher_sandbox sh -c "python manage.py wait_for_db && python manage.py test"

@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+    */migrations/*
+    */models/__init__.py
+max-line-length = 120
+max-complexity = 10
+max-cognitive-complexity = 16
+exlude =
+    */migrations/*
+    migrations,
+    __pycache__,
+    manage.py,
+    settings.py
+    docs

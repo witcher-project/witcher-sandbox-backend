@@ -1,27 +1,43 @@
 [tool.poetry]
-name = "witcher3-api"
+name = "witcher-sandbox-backend"
 version = "0.1.0"
 description = ""
 authors = ["Baclrary <ihorprotsak@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "3.10"
 django = "3.2.4"
 django-polymorphic = "3.1.0"
 django-rest-polymorphic = "0.1.10"
 djangorestframework = "3.13"
 djangorestframework-simplejwt = "^5.3.1"
 djangorestframework-api-key = "^3.0.0"
-psycopg2 = "2.8.6"
+psycopg2-binary = "2.9.9"
 drf-spectacular = "^0.27.0"
-pillow = "10.2.0"
+pillow = "^10.4.0"
 django-filter = "^23.5"
 mkdocs-material = "^9.5.7"
+django-environ = "^0.11.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "6.1.0"
 pre-commit = "3.6.0"
 black = "23.12.1"
+mypy = "^1.11.1"
+isort = "^5.13.2"
+autoflake = "^2.3.1"
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "django"
+skip = "venv"
+combine_as_imports = true
+include_trailing_comma = true
+line_length = 120
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

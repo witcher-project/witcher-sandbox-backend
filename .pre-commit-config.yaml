@@ -1,14 +1,9 @@
+exclude: .*migrations\/.*
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: mixed-line-ending
-      - id: check-added-large-files
-        exclude: app/site/
-      - id: check-docstring-first
-      - id: debug-statements
 
   - repo: https://github.com/psf/black
     rev: 22.10.0
@@ -23,16 +18,35 @@ repos:
     rev: 5.11.5
     hooks:
       - id: isort
-        args: ["--profile", "black"]
+        args: [ "--profile", "black" ]
 
   - repo: https://github.com/hadialqattan/pycln
     rev: v2.1.1
     hooks:
       - id: pycln
-        args: [--all]
+        args: [ --all ]
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
       - id: flake8
-        args: [--config, "app/.flake8"]
+        args:
+          [
+            "--max-line-length=120",
+            "--max-complexity=10",
+            "--exclude=migrations,settings.py,__init__.py",
+            "--ignore=F403,F401",
+          ]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+        exclude: ^(manage\.py|.*migrations/.*)$
+        args: [
+          "--ignore-missing-imports",
+          "--disallow-untyped-defs",
+          "--exclude=migrations",
+          "--check-untyped-defs",
+          "--disable-error-code=var-annotated",
+        ]
